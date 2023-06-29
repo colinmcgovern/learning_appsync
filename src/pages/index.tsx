@@ -9,6 +9,19 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 
+const query = `
+  query {
+    listTodos {
+      items {
+        id
+        body
+        completed
+        createdAt
+      }
+    }
+  }
+`
+
 export default function List() {
 
   const [formData, setFormData] = useState({id: '', name: '', body: ''});
@@ -26,17 +39,63 @@ export default function List() {
   async function createTodo(event){
     event.preventDefault();
     const form = new FormData(event.target)
+    // const data = {
+    //   id: formData["id"],
+    //   name: formData["name"],
+    //   body: formData["body"],
+    //   completed: false
+    // }
     const data = {
-      id: formData["id"],
-      name: formData["name"],
-      body: formData["body"],
+      id: "id",
+      name: "name",
+      body: "body",
       completed: false
     }
-    await API.graphql<GraphQLQuery<CreateTodoMutation>>(
-      graphqlOperation(
-        createTodo,
-        {input: data})
-     );
+
+    // await API.graphql(
+    //   graphqlOperation(
+    //     createTodo,
+    //     {input: data}
+    //     )
+    //  );
+
+    // await API.graphql({
+    //   query: createTodo,
+    //   variables: {input: data}
+    // });
+
+    // try{
+    //   await API.graphql({
+    //     query: getTodo,
+    //     variables: {input: {
+    //       id: "2"
+    //     }}
+    //   })
+    // } catch(error) {
+    //   console.log(error)
+    // }
+
+    // try{
+    //   await API.graphql({
+    //     query: createTodo,
+    //     variables: {input: {
+    //       id: "id",
+    //       name: "name",
+    //       body: "body",
+    //       completed: false
+    //     }}
+    //   })
+    // } catch(error) {
+    //   console.log(error)
+    // }
+
+    // const test = await API.graphql(graphqlOperation(query))
+    // console.log(test)
+
+    const test2 = await API.graphql(graphqlOperation(listTodos))
+    console.log('test2')
+    console.log(test2)
+
     {/*fetchNotes();*/}
     event.target.reset();
   }
